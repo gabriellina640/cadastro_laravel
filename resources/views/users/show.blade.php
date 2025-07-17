@@ -1,28 +1,30 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projeto</title>
-</head>
-<body>
-    
-<a href="{{ route('user.index') }}">Listar</a><br>
-<a href="{{ route('user.edit', ['user' => $user->id]) }}">Editar</a><br>
-<a href="{{ route ('user.destroy', ['user' => $user->id]) }}">Excluir</a><br>
-<h2>Visualizar Usuario</h2>
+@extends('layouts.admin')
 
-@if(session('success'))
-    <p style="color: green;">
+@section('content')
+
+<a href="{{ route('user.index') }}" class="btn btn-secondary mb-3">Listar</a>
+<a href="{{ route('user.edit', ['user' => $user->id]) }}" class="btn btn-warning mb-3">Editar</a>
+
+<form action="{{ route('user.destroy', ['user' => $user->id]) }}" method="POST" class="d-inline-block mb-3" onsubmit="return confirm('Tem certeza que deseja excluir?')">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="btn btn-danger">Apagar</button>
+</form>
+
+<h2>Visualizar Usuário</h2>
+
+@if (session('success'))
+    <div class="alert alert-success">
         {{ session('success') }}
-    </p>
+    </div>
 @endif
 
-ID: {{ $user->id }}<br>
-Nome: {{ $user->name }}<br>
-Email: {{ $user->email }}<br>
-Cadastrado: {{ \Carbon\Carbon::parse($user->created_at)->format('d/m/Y H:i:s') }}<br>
-Editado: {{ \Carbon\Carbon::parse($user->updated_at)->format('d/m/Y H:i:s') }}<br>
+<ul class="list-group mt-3">
+    <li class="list-group-item"><strong>ID:</strong> {{ $user->id }}</li>
+    <li class="list-group-item"><strong>Nome:</strong> {{ $user->name }}</li>
+    <li class="list-group-item"><strong>Email:</strong> {{ $user->email }}</li>
+    <li class="list-group-item"><strong>Cadastrado:</strong> {{ \Carbon\Carbon::parse($user->created_at)->format('d/m/Y H:i:s') }}</li>
+    <li class="list-group-item"><strong>Editado:</strong> {{ \Carbon\Carbon::parse($user->updated_at)->format('d/m/Y H:i:s') }}</li>
+</ul>
 
-</body>
-</html>
+@endsection

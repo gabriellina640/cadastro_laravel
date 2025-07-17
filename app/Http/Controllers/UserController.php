@@ -72,6 +72,7 @@ public function destroy(User $user)
 $user->delete();
  return redirect()->route('user.index')->with('success', 'Usuário excluido com sucesso!');
 
+ 
 }
 
 

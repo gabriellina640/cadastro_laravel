@@ -1,46 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro</title>
-</head>
-<body>
-    
+@extends('layouts.admin')
 
-<a href="{{ route('user.index') }}">Listar</a><br>
-<a href="{{ route('user.show', ['user' => $user->id]) }}">Visualizar</a><br>
-<h2>Editar Usuario</h2>
+@section('content')
 
-@if ($errors->any()){
-    <p style="color: #f00;">
-        @foreach ($errors->all() as $error)
-        {{ $error }}
-        @endforeach
-    </p>
-}
+<a href="{{ route('user.index') }}" class="btn btn-secondary mb-3">Listar Usuários</a>
+<a href="{{ route('user.show', ['user' => $user->id]) }}" class="btn btn-info mb-3">Visualizar</a>
+
+<h2>Editar Usuário</h2>
+
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
 @endif
 
+<form action="{{ route('user.update', $user->id) }}" method="POST" class="mt-3">
+    @csrf
+    @method('PUT')
 
-<form action="{{ route('user.update', $user->id) }}" method="POST">
-@csrf
-@method('PUT')
+    <div class="mb-3">
+        <label for="idname" class="form-label">Nome:</label>
+        <input type="text" name="name" id="idname" class="form-control" placeholder="Nome completo" value="{{ old('name', $user->name) }}">
+    </div>
 
-<label for="name">Nome: </label>
-<input type="text" name="name" id="idname" placeholder="Nome completo" value="{{ old('name', $user->name) }}"><br><br>
+    <div class="mb-3">
+        <label for="idemail" class="form-label">Email:</label>
+        <input type="email" name="email" id="idemail" class="form-control" placeholder="Email" value="{{ old('email', $user->email) }}">
+    </div>
 
-<label for="email">Email: </label>
-<input type="email" name="email" id="idemail" placeholder="Email" value="{{ old('email', $user->email) }}" ><br><br>
+    <div class="mb-3">
+        <label for="idpassword" class="form-label">Senha:</label>
+        <input type="password" name="password" id="idpassword" class="form-control" placeholder="Nova senha (opcional)">
+    </div>
 
-<label for="password">Senha: </label>
-<input type="password" name="password" id="idpassword "placeholder="Senha com no minimo 6 caracteres" value="{{ old('password') }}"><br><br>
-
-<button type="submit">Salvar</button>
-
-
+    <button type="submit" class="btn btn-primary">Salvar</button>
 </form>
 
-
-
-</body>
-</html>
+@endsection

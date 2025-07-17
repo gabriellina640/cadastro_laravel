@@ -1,42 +1,40 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro</title>
-</head>
-<body>
+@extends('layouts.admin')
 
-<a href="{{ route('user.index')}}">Listar</a><br>
-<h2>Cadastrar Usuário </h2>
+@section('content')
 
-@if ($errors->any()){
-    <p style="color: #f00;">
-        @foreach ($errors->all() as $error)
-        {{ $error }}
-        @endforeach
-    </p>
-}
+<a href="{{ route('user.index') }}" class="btn btn-secondary mb-3">Listar Usuários</a>
+
+<h2>Cadastrar Usuário</h2>
+
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
 @endif
 
+<form action="{{ route('user.store') }}" method="POST" class="mt-3">
+    @csrf
 
-<form action="{{ route('user.store')}}" method="POST">
-@csrf
-@method('POST')
+    <div class="mb-3">
+        <label for="idname" class="form-label">Nome:</label>
+        <input type="text" name="name" id="idname" class="form-control" placeholder="Nome completo" value="{{ old('name') }}">
+    </div>
 
-<label for="name">Nome: </label>
-<input type="text" name="name" id="idname" placeholder="Nome completo" value="{{ old('name') }}"><br><br>
+    <div class="mb-3">
+        <label for="idemail" class="form-label">Email:</label>
+        <input type="email" name="email" id="idemail" class="form-control" placeholder="Email" value="{{ old('email') }}">
+    </div>
 
-<label for="email">Email: </label>
-<input type="email" name="email" id="idemail" placeholder="Email" value="{{ old('email') }}" ><br><br>
+    <div class="mb-3">
+        <label for="idpassword" class="form-label">Senha:</label>
+        <input type="password" name="password" id="idpassword" class="form-control" placeholder="Senha com no mínimo 6 caracteres">
+    </div>
 
-<label for="password">Senha: </label>
-<input type="password" name="password" id="idpassword "placeholder="Senha com no minimo 6 caracteres" value="{{ old('password') }}"><br><br>
-
-<button type="submit">Cadastrar</button>
-
-
+    <button type="submit" class="btn btn-success">Cadastrar</button>
 </form>
 
-</body>
-</html>
+@endsection
